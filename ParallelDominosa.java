@@ -15,19 +15,21 @@ public class ParallelDominosa {
 
 
     //The grid of numbers 0 through n that represents the puzzle
-    private static int[][] grid;
+    protected static int[][] grid;
 
     //The set of all the Dominoes chosen to be in the solution (for creation)
     // private static ArrayList<DominoLoc> chosenDominoes;
 
     //The set of all possible Domino Locations
-    private static ArrayList<DomLoc> setS;
+    protected static ArrayList<DomLoc> setS;
 
     //An arraylist of arraylists. Each list is the domlocs that have a certain pair
-    private static ArrayList<ArrayList<DomLoc>> pairMappings;
+    protected static ArrayList<ArrayList<DomLoc>> pairMappings;
 
     //The grid as a 2d array of more informative square objects. Has info to help solve.
-    private static Square[][] superGrid;
+    protected static Square[][] superGrid;
+
+    protected static boolean madeChange;
 
 
     public static void main(String[] args) {
@@ -37,6 +39,8 @@ public class ParallelDominosa {
         int numthreads = Integer.parseInt(args[2]);
 
         grid = new int [n+1][n+2];
+        loadPuzzle(filename);
+
 
         /**** SERIAL STUFF *****/
 
@@ -100,35 +104,16 @@ public class ParallelDominosa {
             //i.e. only one domloc is left that can use this square, so its the only way to cover this
         //3) repeat 1 and 2 alternatingly until either we have chosen DCOUNT doms or we reach a deadend
 
-        boolean madeChange = true;
+        madeChange = true;
         int chosenDoms = 0;
         while(madeChange) {
             madeChange = false;
 
             //search pairmappings for pairs only findable in one place----------------------------
-            // for(ArrayList<DomLoc> domlist : pairMappings) {
-            //     int countAvail = 0;
-            //     DomLoc currDomLoc = null;
-            //     for(DomLoc dl : domlist) {
-            //         if (dl.isAvailable) {
-            //             countAvail++;
-            //             currDomLoc = dl;
-            //         }
-            //     }
-
-            //     //if there's only one, choose it. Mark overlaps as unavailable
-            //     if (countAvail == 1) {
-            //         chooseDomLoc(currDomLoc);
-            //         chosenDoms++;
-            //         madeChange = true;
-            //     }
-            // }
 
             Thread [] threads = new Thread[numthreads];
 
             int numTodo = (int)(Math.ceil(pairMappings.size()/(double)numthreads));
-
-            System.out.println("numTodo: " + numTodo + " for: " + pairMappings.size() + "/" + numthreads);
 
             for(int i = 0; i < numthreads; i++) {
                 threads[i] = new Thread(new ParallelPairMapping(i, pairMappings, numTodo));
@@ -171,6 +156,14 @@ public class ParallelDominosa {
 
         //System.out.println("\n\n chosen \n");        
         
+        chosenDoms = 0;
+
+        for(DomLoc dl : setS) {
+            if(dl.isChosen) {
+                chosenDoms++;
+            }
+        }
+
         if(chosenDoms == DCOUNT(n)) {
            System.out.println("solution found!!!");
         }
@@ -226,7 +219,7 @@ public class ParallelDominosa {
     //This is the solver's version of representing this idea
     static class DomLoc {
 
-        private boolean isAvailable; //is this DomLoc still valid for use?
+        protected boolean isAvailable; //is this DomLoc still valid for use?
         private boolean isChosen; //is this Domino chosen as part of the solution?
         private int r1, r2, c1, c2; //2 rows and columns of the 2 points in the possible domino
         private int n1, n2; //2 numbers on the domino at points 1 and 2 respectively

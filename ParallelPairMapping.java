@@ -13,29 +13,23 @@ public class ParallelPairMapping implements Runnable{
 
 
         for(int i = thread_id*numTodo; ((i < thread_id*numTodo + numTodo) && (i < pairMappings.size())); i++) {
-            System.out.print("i: " + i + " ");
+
+            ArrayList<ParallelDominosa.DomLoc> domlist = pairMappings.get(i);
+
+            int countAvail = 0;
+            ParallelDominosa.DomLoc currDomLoc = null;
+            for(ParallelDominosa.DomLoc dl : domlist) {
+                if (dl.isAvailable) {                        
+                    countAvail++;
+                    currDomLoc = dl;
+                }
+            }
+
+            if (countAvail == 1) {
+                ParallelDominosa.chooseDomLoc(currDomLoc);
+                ParallelDominosa.madeChange = true;
+            }
         }
-
-        System.out.println("");
-
-        // for(ArrayList<DomLoc> domlist : pairMappings) {
-        //         int countAvail = 0;
-        //         DomLoc currDomLoc = null;
-        //         for(DomLoc dl : domlist) {
-        //             if (dl.isAvailable) {
-        //                 countAvail++;
-        //                 currDomLoc = dl;
-        //             }
-        //         }
-
-        //         //if there's only one, choose it. Mark overlaps as unavailable
-        //         if (countAvail == 1) {
-        //             chooseDomLoc(currDomLoc);
-        //             chosenDoms++;
-        //             madeChange = true;
-        //         }
-        //     }
-
     }
 
     public ParallelPairMapping(int id, ArrayList<ArrayList<ParallelDominosa.DomLoc>> pairMappings, int numTodo) {
