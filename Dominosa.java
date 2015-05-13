@@ -4,7 +4,6 @@ import java.util.Queue;
 import java.util.LinkedList;
 import java.util.Random;
 
-
 public class Dominosa {
 
     //The grid of numbers 0 through n that represents the puzzle
@@ -63,7 +62,7 @@ public class Dominosa {
             pairMappings.add(new ArrayList<DomLoc>());
         }
 
-        System.out.println("SIZE: " + pairMappings.size());
+        //System.out.println("SIZE: " + pairMappings.size());
 
         //now we put each DomLoc into pairMappings
         for(DomLoc d : setS) {
@@ -74,7 +73,7 @@ public class Dominosa {
             pairMappings.get(index).add(d);
         }
 
-        printPairMappings(pairMappings);
+        //printPairMappings(pairMappings);
 
         //Now we make a 2D array of square objects, called superGrid
         superGrid = new Square[grid.length][grid[0].length];
@@ -139,13 +138,16 @@ public class Dominosa {
             }
         } //END WHILE LOOP ------------------
 
-        chosenDoms = DCOUNT(n);
-        System.out.println("\n\n chosen \n");
-        if(chosenDoms == DCOUNT(n)) {
-            for (DomLoc chosen : setS) {
-                if (chosen.isChosen) {
-                    System.out.println(chosen);
-                }
+        //System.out.println("\n\n chosen \n");        
+	System.out.println();
+        
+	if(chosenDoms == DCOUNT(n)) {
+	   System.out.println("solution found!!!");
+	}
+
+        for (DomLoc chosen : setS) {
+            if (chosen.isChosen) {
+                System.out.println(chosen);
             }
         }
 
@@ -302,9 +304,9 @@ public class Dominosa {
 
         Collections.shuffle(possibleLocs);
 
-        for (DominoLoc d : possibleLocs) {
-            System.out.println(d + " ");
-        }
+        //for (DominoLoc d : possibleLocs) {
+        //    System.out.println(d + " ");
+        //}
 
         for (DominoLoc d : possibleLocs) {
             if(d.isHor) {
