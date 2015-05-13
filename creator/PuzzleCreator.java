@@ -66,9 +66,18 @@ public class PuzzleCreator implements Runnable {
 
         int counter = 1;
 
+
+
         while(!solveable) {
+            long curr = System.nanoTime();
             createPuzzle(n);
+            long elapsed = System.nanoTime() - curr;
+            //System.out.println("1 " + elapsed);         
             solveable = solvePuzzle(n);
+            long newElapsed = System.nanoTime() - curr - elapsed;
+            double ratio = (double)((float)newElapsed/elapsed);
+            //System.out.println("solver/creator: " + ratio + " | solve: " + newElapsed);         
+
             counter++;
         }
 
@@ -78,7 +87,7 @@ public class PuzzleCreator implements Runnable {
 
         try {
  
-            File file = new File(filename);
+            File file = new File("filename");
  
             // if file doesnt exists, then create it
             if (!file.exists()) {
