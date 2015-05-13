@@ -42,6 +42,9 @@ public class ParallelDominosa {
         loadPuzzle(filename);
 
 
+        long runstart;
+        runstart = System.currentTimeMillis();
+
         /**** SERIAL STUFF *****/
 
         //The set of all possible Domino Locations
@@ -155,8 +158,6 @@ public class ParallelDominosa {
             }
 
         } //END WHILE LOOP ------------------
-
-        //System.out.println("\n\n chosen \n");        
         
         /**** SERIAL STUFF *****/
 
@@ -171,6 +172,11 @@ public class ParallelDominosa {
         if(chosenDoms == DCOUNT(n)) {
            System.out.println("solution found!!!");
         }
+
+        // Output search time
+        long elapsed = System.currentTimeMillis() - runstart;
+        System.out.println ( "Solved with " + n + "-pairs, " + numthreads + " threads" +
+            " in " + elapsed + " milliseconds.");
 
     }
 
