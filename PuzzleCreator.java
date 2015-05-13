@@ -15,6 +15,7 @@ public class PuzzleCreator {
 
     public static void main (String[] args) {
         int n = Integer.parseInt(args[0]);
+	String filename = args[1];
         
         boolean solveable = false;
 
@@ -32,7 +33,7 @@ public class PuzzleCreator {
 
         try {
  
-            File file = new File("grid.txt");
+            File file = new File(filename);
  
             // if file doesnt exists, then create it
             if (!file.exists()) {
