@@ -4,6 +4,14 @@ import java.util.Queue;
 import java.util.LinkedList;
 import java.util.Random;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
+
 public class Dominosa {
 
     //The grid of numbers 0 through n that represents the puzzle
@@ -23,11 +31,50 @@ public class Dominosa {
 
     public static void main (String[] args) {
         int n = Integer.parseInt(args[0]);
+        String filename = args[1];
 
-        createPuzzle(n);
+        grid = new int [n+1][n+2];
+
+        loadPuzzle(filename);
+        // printGrid();
         solvePuzzle(n);
     }
 
+
+    public static void loadPuzzle(String filename) {
+
+        try {
+
+            Scanner br = new Scanner(new File(filename));
+
+            StringBuilder sb = new StringBuilder();
+            String line = br.nextLine();
+
+            int r = 0;
+            int c = 0;
+
+            while (line != null) {
+                
+                String[] row = line.split("\\s+");
+                for(String s : row) {
+                    grid[r][c] = Integer.parseInt(s);
+                    c++;
+                }
+                // sb.append(line);
+                // sb.append(System.lineSeparator());
+                line = br.nextLine();
+                r++;
+                c = 0;
+            }
+            br.close();
+
+            // String everything = sb.toString();
+        } catch (Exception e) {
+            // continue;
+        }
+
+
+    }
 
     public static void solvePuzzle(int n) {
 
@@ -139,17 +186,16 @@ public class Dominosa {
         } //END WHILE LOOP ------------------
 
         //System.out.println("\n\n chosen \n");        
-	System.out.println();
         
 	if(chosenDoms == DCOUNT(n)) {
 	   System.out.println("solution found!!!");
 	}
 
-        for (DomLoc chosen : setS) {
-            if (chosen.isChosen) {
-                System.out.println(chosen);
-            }
-        }
+        // for (DomLoc chosen : setS) {
+        //     if (chosen.isChosen) {
+        //         System.out.println(chosen);
+        //     }
+        // }
 
 
 
