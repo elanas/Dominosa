@@ -111,12 +111,14 @@ public class ParallelDominosa {
 
             //search pairmappings for pairs only findable in one place----------------------------
 
+            /**** PARALLEL STUFF - Pair Mapping *****/
+
             Thread [] threads = new Thread[numthreads];
 
             int numTodo = (int)(Math.ceil(pairMappings.size()/(double)numthreads));
 
             for(int i = 0; i < numthreads; i++) {
-                threads[i] = new Thread(new ParallelPairMapping(i, pairMappings, numTodo));
+                threads[i] = new Thread(new ParallelPairMapping(i, numTodo));
                 threads[i].start();
             }
 
@@ -129,33 +131,35 @@ public class ParallelDominosa {
                     return;
                 }
             }
+
+            /**** PARALLEL STUFF - Super Grid *****/
             
 
-            //search supergrid for squares that only have one available covering domloc ----------
-            for(int c = 0; c < grid[0].length; c++) {
-                for(int r = 0; r < grid.length; r++) {
-                    Square currSquare = superGrid[r][c];
-                    int countAvail = 0; 
-                    DomLoc currDomLoc = null;
-                    for(DomLoc dl : currSquare.domlocs) {
-                        if (dl != null && dl.isAvailable) {
-                            countAvail++;
-                            currDomLoc = dl;
-                        }
-                    }
+            threads = new Thread[numthreads];
 
-                    //if there's only one, choose it. Mark overlaps as unavailable
-                    if (countAvail == 1) {
-                        chooseDomLoc(currDomLoc);
-                        chosenDoms++;
-                        madeChange = true;
-                    }
+            int rowsTodo = (int)Math.ceil(grid.length / (double)numthreads);
+
+            for(int i = 0; i < numthreads; i++) {
+                threads[i] = new Thread(new ParallelSuperGrid(i, rowsTodo));
+                threads[i].start();
+            }
+
+            //.join threads
+            for (int i = 0; i < numthreads; i++) {
+                try {
+                    threads[i].join();
+                } catch (InterruptedException e) {  
+                    System.out.println("ERROR in thread");
+                    return;
                 }
             }
+
         } //END WHILE LOOP ------------------
 
         //System.out.println("\n\n chosen \n");        
         
+        /**** SERIAL STUFF *****/
+
         chosenDoms = 0;
 
         for(DomLoc dl : setS) {
@@ -168,27 +172,16 @@ public class ParallelDominosa {
            System.out.println("solution found!!!");
         }
 
-            // for (DomLoc chosen : setS) {
-            //     if (chosen.isChosen) {
-            //         System.out.println(chosen);
-            //     }
-            // }
-
-            
-
-
-            /**** PARALLEL STUFF *****/
-
     }
 
 //an object representing a square in the grid. Contains information relevant to that square
     static class Square {
 
-        private int num; //number on the square
-        private boolean isCovered; //have we chosen a DomLoc that uses this square yet?
-        private int r; //row
-        private int c; //column
-        private DomLoc[] domlocs; //array of the up to 4 DomLocs that can use this square
+        protected int num; //number on the square
+        protected boolean isCovered; //have we chosen a DomLoc that uses this square yet?
+        protected int r; //row
+        protected int c; //column
+        protected DomLoc[] domlocs; //array of the up to 4 DomLocs that can use this square
 
         public Square(int num, int r, int c, DomLoc[] domlocs) {
             isCovered = false;

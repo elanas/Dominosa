@@ -9,9 +9,6 @@ public class ParallelPairMapping implements Runnable{
 
     public void run() {
 
-        System.out.println("Running Thread: " + thread_id);
-
-
         for(int i = thread_id*numTodo; ((i < thread_id*numTodo + numTodo) && (i < pairMappings.size())); i++) {
 
             ArrayList<ParallelDominosa.DomLoc> domlist = pairMappings.get(i);
@@ -32,21 +29,10 @@ public class ParallelPairMapping implements Runnable{
         }
     }
 
-    public ParallelPairMapping(int id, ArrayList<ArrayList<ParallelDominosa.DomLoc>> pairMappings, int numTodo) {
+    public ParallelPairMapping(int id, int numTodo) {
         this.thread_id = id;
-        this.pairMappings = pairMappings;
+        this.pairMappings = ParallelDominosa.pairMappings;
         this.numTodo = numTodo;
     }
-
-    // public static void main(String[] args) {
-
-    //     int numthreads = Integer.parseInt(args[0]);
-
-    //     for(int i = 0; i < numthreads; i++) {
-    //         new Thread(new ParallelPairMapping(i)).start();
-    //     }
-
-    // }
-
 
 }
