@@ -17,7 +17,7 @@ for i in `seq 1 5`
 	THREADS=1
         while [ $THREADS -le 16 ]
 	    do
-		java PuzzleCreator 10 ./output/output.txt $THREADS >> create20parallel${THREADS}.txt
+		java PuzzleCreator 10 output.txt $THREADS >> create20parallel${THREADS}.txt
 		let THREADS=THREADS*2
 	    done
     done
