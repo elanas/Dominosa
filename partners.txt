@@ -1,0 +1,3 @@
+Most of the technical work was completed using paired programming. Throughout the assignment we would switch who was driver and who was navigator. The problem solving was carried out by both of us together using whiteboards.
+
+The Latex project writeup was written mainly by Graham. The data manipulation and graph visualization, README and commenting of code was completed by Elana. The work was distributed evenly thoughout the project.
