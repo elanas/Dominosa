@@ -175,7 +175,7 @@ public class ParallelDominosa {
 
         // Output search time
         long elapsed = System.currentTimeMillis() - runstart;
-        System.out.println ( "Solved with " + n + "-pairs, " + numthreads + " threads" +
+        System.out.println ( "Solved with n=" + n + " and " + numthreads + " threads" +
             " in " + elapsed + " milliseconds.");
 
     }

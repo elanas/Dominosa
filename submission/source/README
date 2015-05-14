@@ -23,7 +23,7 @@ time it takes to solve.
 The usage is below:
 
     To compile: javac Dominosa.java
-    To run:     java Dominosa 5 5puzzle1.txt
+    To run:     java Dominosa 5 ./puzzles/5puzzle1.txt
 
 5puzzle1.txt is a text file that holds a puzzle
 where n = 5. The input file must be a grid that corresponds
@@ -59,7 +59,7 @@ of threads desired. The output is the time taken to solve the
 puzzle with the given number of threads.  See below:
 
     To compile: javac ParallelDominosa.java
-    To run:     java ParallelDominosa 5 5puzzle1.txt 4
+    To run:     java ParallelDominosa 5 ./puzzles/5puzzle1.txt 4
 
 The above command would run the ParallelDominosa solver
 using 4 cores and output how much time it takes to find
@@ -80,12 +80,19 @@ to a text file. The following commands may used to compile
 and run:
 
     To compile: javac PuzzleCreator.java
-    To run:     java PuzzleCreator 5 5puzzle1.txt 4
+    To run:     java PuzzleCreator 5 ./puzzles/5puzzle1.txt 4
 
 In this example, the PuzzleCreator will create a puzzle
 with up to value of five in any pair (n == 5) and a grid 
 of size 6x7 using four threads. The program also outputs
-the time taken to create the puzzle in the command line.
+the time taken to create the puzzle and how many different
+puzzles it had to produce before finding one that was 
+solveable.
+
+For example, the output: 
+    "17 5" means that a solveable puzzle was found in 
+    17 milliseconds and 5 different puzzles had to be created
+    before finding one that was solveable.
 
 The puzzle created can be used with ParallelDominsa.java
 in order to measure how long it takes to solve in parallel.

@@ -33,9 +33,16 @@ public class Dominosa {
         int n = Integer.parseInt(args[0]);
         String filename = args[1];
 
+        long runstart;
+        runstart = System.currentTimeMillis();
+
         grid = new int [n+1][n+2];
         loadPuzzle(filename);
         solvePuzzle(n);
+
+        // Output search time
+        long elapsed = System.currentTimeMillis() - runstart;
+        System.out.println (elapsed);
     }
 
 
